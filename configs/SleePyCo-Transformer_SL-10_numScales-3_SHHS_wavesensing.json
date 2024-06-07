@@ -1,0 +1,62 @@
+{
+    "dataset": {
+        "name": "shhs",
+        "eeg_channel": "C4-A1",
+        "num_splits": 1,
+        "seq_len": 10,
+        "sampleing_rate": 125,
+        "target_idx": -1,
+        "root_dir": "/summer/ProtoPSleep/"
+    },
+
+    "backbone": {
+        "name": "ProtoP",
+        "init_weights": false,
+        "dropout": false
+    },
+
+    "feature_pyramid": {
+        "dim": 1,
+        "num_scales": 3
+    },
+
+    "classifier": {
+        "name": "ProtoP",
+        "prototype_shape": [10, 27, 1],
+        "feedforward_dim": 64,
+
+        "block_num": 6,  
+        "channel_num": 128,  
+        "kernel_size": 9,  
+        "repeat_num": 3,  
+        "strides_num": 1,  
+        "afr_reduced_dim": 27,  
+
+        "prototype_num": 10,  
+        "feature_dim": 64,  
+
+        "dist_lambda": 17.8373,
+        "class_lambda": 50,
+        "identity_lambda": 8.9351,
+        "pd_lambda": 7.9252,
+        "weight_lambda": 0.3,
+        "num_classes": 5,
+        "pos_enc": {
+            "dropout": false
+        }
+    },
+
+    "training_params": {
+        "mode": "freezefinetune",
+        "max_epochs": 5000,
+        "batch_size": 128,
+        "lr": 0.0005,
+        "weight_decay": 0.0001,
+        "val_period": 5000,
+        "early_stopping": {
+            "mode": "max",
+            "patience": 50
+        }
+    },
+    "protop_mode": "normal" 
+}
