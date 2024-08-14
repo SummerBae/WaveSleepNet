@@ -14,6 +14,7 @@ from loader import EEGDataLoader
 from models.protop import ProtoPNet      
 
 
+CLASS_WEIGHT = [1, 1.5, 1, 1, 1]
 class OneFoldTrainer:
     def __init__(self, args, fold, config):
         self.args = args
@@ -31,8 +32,9 @@ class OneFoldTrainer:
         self.train_iter = 0
         self.model = self.build_model()
         self.loader_dict = self.build_dataloader()
-        
-        self.criterion = nn.CrossEntropyLoss()
+
+        class_weight = torch.tensor(CLASS_WEIGHT).to(self.device)
+        self.criterion = nn.CrossEntropyLoss(class_weight)
         self.activate_train_mode()
         self.optimizer = optim.Adam([p for p in self.model.parameters() if p.requires_grad], lr=self.tp_cfg['lr'], weight_decay=self.tp_cfg['weight_decay'])
         
